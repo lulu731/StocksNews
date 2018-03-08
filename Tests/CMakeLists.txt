@@ -7,7 +7,7 @@ set( PROJECT_NAME "TestsStockNews" )
 project(${PROJECT_NAME})
 
 ## Use all the *.cpp files we found under this folder for the project
-FILE(GLOB SRCS "*.cpp" "*.c" "*.hpp")
+FILE(GLOB SRCS "main.cpp" "../StocksNews/*.cpp" "../StocksNews/*.c" "../StocksNews/*.hpp")
 
 ## Define the executable
 add_executable(${PROJECT_NAME} ${SRCS})

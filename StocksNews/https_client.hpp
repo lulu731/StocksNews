@@ -6,6 +6,7 @@
 
 using boost::asio::ip::tcp;
 
+
 class client
 {
 public:
