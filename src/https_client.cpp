@@ -1,8 +1,9 @@
 #include "https_client.hpp"
-#include <iostream>
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
 #include <boost/asio/ssl.hpp>
+#include <boost/bind.hpp>
+#include <iostream>
+#include <sstream>
 
 using boost::asio::ip::tcp;
 
@@ -13,7 +14,6 @@ client::client(boost::asio::io_service& io_service,
     : resolver_(io_service)
     , socket_(io_service, context)
 {
-
     // Form the request. We specify the "Connection: close" header so that the
     // server will close the socket after transmitting the response. This will
     // allow us to treat all data up until the EOF as the content.
@@ -23,9 +23,6 @@ client::client(boost::asio::io_service& io_service,
     request_stream << "User-Agent: HTTPTool/1.0"
                    << "\r\n";
     request_stream << "Accept: */*\r\n";
-    // request_stream << "Accept-Encoding: gzip, deflate, br\r\n";
-    // request_stream << "\r\n\r\n";
-
     request_stream << "Connection: close\r\n\r\n";
 
     // Start an asynchronous resolve to translate the server and service names
@@ -35,11 +32,13 @@ client::client(boost::asio::io_service& io_service,
                                        boost::asio::placeholders::iterator));
 }
 
+client::~client()
+{
+}
+
 void client::handle_resolve(const boost::system::error_code& err, tcp::resolver::iterator endpoint_iterator)
 {
     if(!err) {
-	std::cout << "Resolve OK"
-	          << "\n";
 	socket_.set_verify_mode(boost::asio::ssl::verify_peer);
 	socket_.set_verify_callback(boost::bind(&client::verify_certificate, this, _1, _2));
 
@@ -63,7 +62,6 @@ bool client::verify_certificate(bool preverified, boost::asio::ssl::verify_conte
     char subject_name[256];
     X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
     X509_NAME_oneline(X509_get_subject_name(cert), subject_name, 256);
-    std::cout << "Verifying " << subject_name << "\n";
 
     return preverified;
 }
@@ -71,8 +69,6 @@ bool client::verify_certificate(bool preverified, boost::asio::ssl::verify_conte
 void client::handle_connect(const boost::system::error_code& err)
 {
     if(!err) {
-	std::cout << "Connect OK "
-	          << "\n";
 	socket_.async_handshake(boost::asio::ssl::stream_base::client,
 	    boost::bind(&client::handle_handshake, this, boost::asio::placeholders::error));
     } else {
@@ -83,12 +79,7 @@ void client::handle_connect(const boost::system::error_code& err)
 void client::handle_handshake(const boost::system::error_code& error)
 {
     if(!error) {
-	std::cout << "Handshake OK "
-	          << "\n";
-	std::cout << "Request: "
-	          << "\n";
 	const char* header = boost::asio::buffer_cast<const char*>(request_.data());
-	std::cout << header << "\n";
 
 	// The handshake was successful. Send the request.
 	boost::asio::async_write(
@@ -131,8 +122,6 @@ void client::handle_read_status_line(const boost::system::error_code& err)
 	    std::cout << status_code << "\n";
 	    return;
 	}
-	std::cout << "Status code: " << status_code << "\n";
-
 	// Read the response headers, which are terminated by a blank line.
 	boost::asio::async_read_until(socket_, response_, "\r\n\r\n",
 	    boost::bind(&client::handle_read_headers, this, boost::asio::placeholders::error));
@@ -148,12 +137,9 @@ void client::handle_read_headers(const boost::system::error_code& err)
 	std::istream response_stream(&response_);
 	std::string header;
 	while(std::getline(response_stream, header) && header != "\r")
-	    std::cout << header << "\n";
-	std::cout << "\n";
+	    ;
 
 	// Write whatever content we already have to output.
-	if(response_.size() > 0)
-	    std::cout << &response_;
 
 	// Start reading remaining data until EOF.
 	boost::asio::async_read(socket_, response_, boost::asio::transfer_at_least(1),
@@ -167,7 +153,7 @@ void client::handle_read_content(const boost::system::error_code& err)
 {
     if(!err) {
 	// Write all of the data that has been read so far.
-	std::cout << &response_;
+	strstream_ << &response_;
 
 	// Continue reading remaining data until EOF.
 	boost::asio::async_read(socket_, response_, boost::asio::transfer_at_least(1),
@@ -175,4 +161,9 @@ void client::handle_read_content(const boost::system::error_code& err)
     } else if(err != boost::asio::error::eof) {
 	std::cout << "Error: " << err << "\n";
     }
+}
+
+void client::get_response(std::stringstream& response)
+{
+    response << strstream_.str();
 };

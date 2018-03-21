@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.7)
 
-## Use the variable PROJECT_NAME for changing the target name
-set( PROJECT_NAME "TestsStockNews" )
+set( PROJECT_NAME "tests" )
 
 ## Set our project name
 project(${PROJECT_NAME})
 
-## Use all the *.cpp files we found under this folder for the project
-FILE(GLOB SRCS "main.cpp" "../StocksNews/*.cpp" "../StocksNews/*.c" "../StocksNews/*.hpp")
+FILE(GLOB SRCS "*.cpp" "../src/*.cpp" "../src/*.hpp")
 
-## Define the executable
 add_executable(${PROJECT_NAME} ${SRCS})
+
+find_library(BOOST_TEST NAMES boost_unit_test_framework PATHS /usr/lib)
+target_link_libraries(tests ${BOOST_TEST})
 
 find_library(BOOST_SYST NAMES boost_system PATHS /usr/lib)
 target_link_libraries( ${PROJECT_NAME} ${BOOST_SYST})
@@ -23,3 +23,4 @@ target_link_libraries( ${PROJECT_NAME} ${SSL})
 
 find_library(CRYPTO NAMES crypto PATHS /usr/lib)
 target_link_libraries( ${PROJECT_NAME} ${CRYPTO})
+#add_custom_target(run ./tests DEPENDS tests)

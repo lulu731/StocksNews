@@ -3,9 +3,9 @@
 
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
+#include <sstream>
 
 using boost::asio::ip::tcp;
-
 
 class client
 {
@@ -14,6 +14,8 @@ public:
         boost::asio::ssl::context& context,
         const std::string& server,
         const std::string& path);
+    ~client();
+    void get_response(std::stringstream& response);
 
 private:
     void handle_resolve(const boost::system::error_code& err, tcp::resolver::iterator endpoint_iterator);
@@ -28,6 +30,7 @@ private:
     boost::asio::ssl::stream<boost::asio::ip::tcp::socket> socket_;
     boost::asio::streambuf request_;
     boost::asio::streambuf response_;
+    std::stringstream strstream_;
 };
 
 #endif
