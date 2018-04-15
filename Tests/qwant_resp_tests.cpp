@@ -1,9 +1,7 @@
-#define BOOST_TEST_MODULE qwant_response
-#define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 #include "../src/qwant_response.hpp"
 
-BOOST_AUTO_TEST_SUITE(qr_suite)
+BOOST_AUTO_TEST_SUITE(qr_suite)//, * boost::unit_test::disabled())
 
 BOOST_AUTO_TEST_CASE(nb_news)
 {

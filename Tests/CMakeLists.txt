@@ -23,4 +23,8 @@ target_link_libraries( ${PROJECT_NAME} ${SSL})
 
 find_library(CRYPTO NAMES crypto PATHS /usr/lib)
 target_link_libraries( ${PROJECT_NAME} ${CRYPTO})
+
+find_library(FILE_SYST NAMES boost_filesystem PATHS /usr/lib)
+target_link_libraries( ${PROJECT_NAME} ${FILE_SYST})
+
 #add_custom_target(run ./tests DEPENDS tests)
