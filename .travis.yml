@@ -1,13 +1,12 @@
 before_install :
   - sudo apt-get -qq update
-  - sudo apt-get install -y libboost-dev
+  - sudo apt-get install -y libboost-all-dev
 
 language : cpp
 
 script:
   - cd Tests
   - mkdir build
-  - mkdir stocks
   - cd build
   - cmake -G "Unix Makefiles" ..
   - make
