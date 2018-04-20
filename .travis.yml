@@ -13,9 +13,8 @@ matrix:
 language: cpp
 
 before_install:
-#  - eval "${MATRIX_EVAL}"
   - sudo apt-get update -qq 
-  - sudo apt-get install -qq g++-7
+  - eval "${MATRIX_EVAL}"
   - sudo apt-get install -y libboost-all-dev   
 
 
