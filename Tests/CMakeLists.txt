@@ -8,6 +8,7 @@ project(${PROJECT_NAME})
 FILE(GLOB SRCS "*.cpp" "../src/*.cpp" "../src/*.hpp")
 
 add_executable(${PROJECT_NAME} ${SRCS})
+add_definitions(-std=c++11 -O3 -Wall)
 
 find_library(BOOST_TEST NAMES boost_unit_test_framework PATHS /usr/lib)
 target_link_libraries(tests ${BOOST_TEST})
