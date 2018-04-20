@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE(data_stream_test)
 	{
 		boost::filesystem::create_directory(dir_stocks);
 	}
-	for (auto&& x : boost::filesystem::directory_iterator("../" + dir_stocks +"/"))
+	for (auto&& x : boost::filesystem::directory_iterator("../stocks/"))
 	{
 		boost::filesystem::path p ;
 		p /= dir_stocks;
