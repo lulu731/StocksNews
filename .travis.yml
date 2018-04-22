@@ -21,18 +21,17 @@ before_install:
   - cd boost_1_67_0
   - ./bootstrap.sh --prefix=../installation --with-libraries=test,system,filesystem
   - ./b2 install
-  - cd ..
-  - cd ..
+#  - cd ..
+#  - cd ..
 
   - sudo apt-get update -qq 
   - eval "${MATRIX_EVAL}"
 
 
 script: 
-  - cd Stocksnews/Tests
+  - cd Tests
   - mkdir build
   - cd build
   - cmake -G "Unix Makefiles" ..
   - make
   - ./tests
-
