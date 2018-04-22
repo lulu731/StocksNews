@@ -12,8 +12,8 @@ public:
 	void update_news_nb(const int);
 	int get_news_nb();
 private:
-	std::fstream fi_stream_, fo_stream_;
 	const std::string database_;
+	std::fstream fi_stream_, fo_stream_;
 	int output_pos = 0 ;
 };
 

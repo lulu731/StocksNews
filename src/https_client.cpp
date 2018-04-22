@@ -79,7 +79,7 @@ void client::handle_connect(const boost::system::error_code& err)
 void client::handle_handshake(const boost::system::error_code& error)
 {
     if(!error) {
-	const char* header = boost::asio::buffer_cast<const char*>(request_.data());
+	boost::asio::buffer_cast<const char*>(request_.data());
 
 	// The handshake was successful. Send the request.
 	boost::asio::async_write(

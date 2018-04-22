@@ -13,6 +13,7 @@ matrix:
 language: cpp
 
 before_install:
+  - cd ..
   - mkdir boost
   - cd boost
   - wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.bz2
@@ -25,12 +26,10 @@ before_install:
 
   - sudo apt-get update -qq 
   - eval "${MATRIX_EVAL}"
-#  - sudo apt-get install -y libboost-all-dev   
 
 
-script:
-#  - ls /usr/lib/* 
-  - cd Tests
+script: 
+  - cd Stocksnews/Tests
   - mkdir build
   - cd build
   - cmake -G "Unix Makefiles" ..
