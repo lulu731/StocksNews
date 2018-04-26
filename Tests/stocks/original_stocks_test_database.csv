@@ -1,5 +1,5 @@
-FTE.PA,France Telecom,1,2
-ACA.PA,Credit Agricole,1,2
-TEO.PA,Theolia SA,1,2
-FP.PA,Total SA,1,2
-KN.PA,Natixis,1,2
+FTE.PA,France Telecom,1,50,0.1
+ACA.PA,Credit Agricole,1,50,0.2
+TEO.PA,Theolia SA,1,50,0.3
+FP.PA,Total SA,1,50,0.5
+KN.PA,Natixis,1,49,0.12

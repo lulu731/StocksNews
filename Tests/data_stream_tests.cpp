@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(data_stream_test)
 	actual.update_news_nb(51);
 	actual.update_news_nb(52);
 	actual.update_news_nb(53);
-	actual.update_news_nb(54);
+	actual.update_news_nb(46);
 	actual.update_news_nb(55);
 	actual.close();
 	

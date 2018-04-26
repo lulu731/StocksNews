@@ -1,5 +1,5 @@
-FTE.PA,France Telecom,2,51
-ACA.PA,Credit Agricole,2,52
-TEO.PA,Theolia SA,2,53
-FP.PA,Total SA,2,54
-KN.PA,Natixis,2,55
+FTE.PA,France Telecom,50,51,0.02
+ACA.PA,Credit Agricole,50,52,0.04
+TEO.PA,Theolia SA,50,53,0.06
+FP.PA,Total SA,50,46,-0.08
+KN.PA,Natixis,49,55,0.12
