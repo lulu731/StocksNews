@@ -3,6 +3,7 @@
 
 #include "https_client.hpp"
 #include <sstream>
+#include <string>
 
 namespace qwant
 {
@@ -10,7 +11,7 @@ namespace qwant
 class qwant_response
 {
 public:
-    qwant_response();
+    qwant_response(const std::string&);
     int get_nb_news();
 
 private:

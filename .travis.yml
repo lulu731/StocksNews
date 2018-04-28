@@ -1,14 +1,14 @@
-matrix:
-  include:
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
-      env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+#matrix:
+#  include:
+#    - os: linux
+#      addons:
+#        apt:
+#          sources:
+#            - ubuntu-toolchain-r-test
+#          packages:
+#            - g++-7
+#      env:
+#        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
 language: cpp
 
@@ -20,16 +20,11 @@ before_install:
   - tar --bzip2 -xf boost_1_67_0.tar.bz2
   - cd boost_1_67_0
   - ./bootstrap.sh --prefix=../installation --with-libraries=test,system,filesystem
-  - ./b2 install
+  - ./b2 -d0 install
   - cd ..
   - cd ..
-
-#  - sudo apt-get update -qq 
-#  - eval "${MATRIX_EVAL}"
-
 
 script: 
-#  - pwd
   - cd StocksNews
   - cd Tests
   - mkdir build

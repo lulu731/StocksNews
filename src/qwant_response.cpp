@@ -8,14 +8,14 @@
 
 using boost::asio::ip::tcp;
 
-qwant::qwant_response::qwant_response()
+qwant::qwant_response::qwant_response(const std::string& stock_name)
 {
     try {
 	boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23);
 	ctx.set_default_verify_paths();
 
 	boost::asio::io_service io_service;
-	client c(io_service, ctx, "api.qwant.com", "/api/search/news?q=darty&freshness=week");
+	client c(io_service, ctx, "api.qwant.com", "/api/search/news?q=" + stock_name + "&freshness=week");
 	io_service.run();
 	c.get_response(response_);
 
