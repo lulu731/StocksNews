@@ -53,8 +53,3 @@ int data_stream::get_news_nb()
 {
     return 5;
 }
-
-sorted_stocks data_stream::sort_stocks(const int out_nb, const bool up)
-{
-    // return _sorted_stocks;
-}

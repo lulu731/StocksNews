@@ -18,7 +18,6 @@ qwant::qwant_response::qwant_response(const std::string& stock_name)
 	client c(io_service, ctx, "api.qwant.com", "/api/search/news?q=" + stock_name + "&freshness=week");
 	io_service.run();
 	c.get_response(response_);
-
     } catch(std::exception& e) {
 	std::cout << "Exception: " << e.what() << "\n";
     };

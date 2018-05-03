@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.7)
 
 set( PROJECT_NAME "tests" )
 project(${PROJECT_NAME})
-FILE(GLOB SRCS "*.cpp" "../src/*.cpp" "../src/*.hpp")
+FILE(GLOB SRCS "*.cpp" "*.hpp" "../src/*.cpp" "../src/*.hpp")
 
 set(BOOST_INSTALLATION "../../boost/installation/")
 include_directories(../../boost/installation/include)
