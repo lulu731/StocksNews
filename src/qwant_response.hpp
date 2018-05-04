@@ -2,6 +2,7 @@
 #define QWANT_RESPONSE_HPP
 
 #include "https_client.hpp"
+
 #include <sstream>
 #include <string>
 

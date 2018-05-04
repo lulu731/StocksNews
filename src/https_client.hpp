@@ -1,9 +1,10 @@
 #ifndef HTTPS_CLIENT_H
 #define HTTPS_CLIENT_H
 
+#include <sstream>
+
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
-#include <sstream>
 
 using boost::asio::ip::tcp;
 

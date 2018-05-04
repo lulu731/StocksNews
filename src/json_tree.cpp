@@ -1,9 +1,11 @@
 #include "json_tree.hpp"
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/property_tree/ptree.hpp>
+
 #include <iostream>
 #include <istream>
 #include <string>
+
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 // Short alias for this namespace
 namespace pt = boost::property_tree;

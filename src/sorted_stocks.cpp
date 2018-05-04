@@ -1,4 +1,5 @@
 #include "sorted_stocks.hpp"
+
 #include <cstdlib>
 #include <fstream>
 #include <iostream>

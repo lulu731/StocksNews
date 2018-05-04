@@ -1,9 +1,10 @@
 #ifndef JSON_TREE_HPP
 #define JSON_TREE_HPP
 
-#include <boost/property_tree/ptree.hpp>
 #include <istream>
 #include <string>
+
+#include <boost/property_tree/ptree.hpp>
 
 // Short alias for this namespace
 namespace pt = boost::property_tree;

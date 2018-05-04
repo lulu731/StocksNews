@@ -12,6 +12,7 @@ public:
     const std::string get_stock_name();
     void update_news_nb(const int);
     int get_news_nb();
+	bool eof();
 
 private:
     const std::string _database;

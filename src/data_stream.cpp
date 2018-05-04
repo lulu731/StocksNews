@@ -1,10 +1,12 @@
 #include "data_stream.hpp"
-#include <boost/filesystem.hpp>
+
 #include <cstdlib>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <string>
+
+#include <boost/filesystem.hpp>
 
 data_stream::data_stream(const std::string& database)
     : _database(database)
@@ -16,6 +18,7 @@ data_stream::data_stream(const std::string& database)
     if(!_fi_stream) {
 	std::cout << "can't open file" << std::endl; // todo : throw exception
     }
+	_stock_updated = true;
 }
 
 void data_stream::close_stream()
@@ -30,21 +33,24 @@ void data_stream::update_news_nb(const int nb)
     std::getline(_fi_stream, _first_nb, ',');
     std::getline(_fi_stream, _last_nb, ',');
     _int_last_nb = std::stoi(_last_nb);
-    std::getline(_fi_stream, _inc_rate);
+    std::getline(_fi_stream, _inc_rate,'\n');
 
     _int_first_nb = _int_last_nb;
     _int_last_nb = nb;
     _fo_stream << _stock_code << ',' << _stock_name << ',' << _int_first_nb << ',' << _int_last_nb << ',';
     _fo_stream << std::setprecision(2) << (float(_int_last_nb - _int_first_nb) / _int_first_nb) << std::endl;
     _stock_updated = true;
+	_stock_name = get_stock_name();
+	
 }
 
 const std::string data_stream::get_stock_name()
 {
-    if(_stock_name.empty() || _stock_updated) {
-	std::getline(_fi_stream, _stock_code, ',');
-	std::getline(_fi_stream, _stock_name, ',');
-	_stock_updated = false;
+	if (_stock_updated)
+	{
+		std::getline(_fi_stream, _stock_code, ',');
+		std::getline(_fi_stream, _stock_name, ',');
+		_stock_updated = false;
     };
     return _stock_name;
 }
@@ -52,4 +58,9 @@ const std::string data_stream::get_stock_name()
 int data_stream::get_news_nb()
 {
     return 5;
+}
+
+bool data_stream::eof()
+{
+	return _fi_stream.eof();
 }
