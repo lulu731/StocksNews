@@ -4,22 +4,21 @@
 #include <fstream>
 #include <string>
 
-class data_stream
+class DataStream
 {
 public:
-    data_stream(const std::string&);
-    void close_stream();
-    const std::string get_stock_name();
-    void update_news_nb(const int);
-    int get_news_nb();
-	bool eof();
+    explicit DataStream(const std::string&);
+    void CloseStream();
+    const std::string GetStockName();
+    void UpdateNewsNb(const int);
+    bool EoF();
 
 private:
-    const std::string _database;
-    std::fstream _fi_stream, _fo_stream;
-    std::string _stock_code, _stock_name, _first_nb, _last_nb, _inc_rate;
-    int _int_first_nb, _int_last_nb;
-    bool _stock_updated;
+    const std::string m_database;
+    std::fstream m_fiStream, m_foStream;
+    std::string m_stockCode, m_stockName, m_firstNb, m_lastNb, m_incRate;
+    int m_intFirstNb, m_intLastNb;
+    bool m_stockUpdated;
 };
 
 #endif // DATA_STREAM_HPP

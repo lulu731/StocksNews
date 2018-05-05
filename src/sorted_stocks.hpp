@@ -4,16 +4,16 @@
 #include <map>
 #include <string>
 
-class sorted_stocks
+class SortedStocks
 {
 public:
-    sorted_stocks(const std::string&, int, bool = true);
-    const std::string& next_stock();
+    SortedStocks(const std::string&, int, bool = true);
+    const std::string& NextStock();
 
 private:
-    std::multimap<float, std::string, std::greater<float>> _mmap_sorted_stocks;
-    std::multimap<float, std::string, std::greater<float>>::iterator _it_sorted_stocks;
-    std::string _no_more_stocks;
+    std::multimap<float, std::string, std::greater<float>> m_mmapSortedStocks;
+    std::multimap<float, std::string, std::greater<float>>::iterator m_itSortedStocks;
+    std::string m_noMoreStocks;
 };
 
 #endif // SORTED_STOCKS_HPP

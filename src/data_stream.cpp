@@ -8,59 +8,54 @@
 
 #include <boost/filesystem.hpp>
 
-data_stream::data_stream(const std::string& database)
-    : _database(database)
-    , _fi_stream(database, std::ios_base::in)
-    , _fo_stream(database + ".tmp", std::ios_base::out | std::ios_base::trunc)
+DataStream::DataStream(const std::string& database)
+    : m_database(database)
+    , m_fiStream(database, std::ios_base::in)
+    , m_foStream(database + ".tmp", std::ios_base::out | std::ios_base::trunc)
 {
-    _stock_name = "";
-    _stock_updated = false;
-    if(!_fi_stream) {
+    m_stockName = "";
+    m_stockUpdated = false;
+    if(!m_fiStream) {
 	std::cout << "can't open file" << std::endl; // todo : throw exception
     }
-	_stock_updated = true;
+	m_stockUpdated = true;
 }
 
-void data_stream::close_stream()
+void DataStream::CloseStream()
 {
-    _fi_stream.close();
-    _fo_stream.close();
-    boost::filesystem::copy_file(_database + ".tmp", _database, boost::filesystem::copy_option::overwrite_if_exists);
+    m_fiStream.close();
+    m_foStream.close();
+    boost::filesystem::copy_file(m_database + ".tmp", m_database, boost::filesystem::copy_option::overwrite_if_exists);
 }
 
-void data_stream::update_news_nb(const int nb)
+void DataStream::UpdateNewsNb(const int nb)
 {
-    std::getline(_fi_stream, _first_nb, ',');
-    std::getline(_fi_stream, _last_nb, ',');
-    _int_last_nb = std::stoi(_last_nb);
-    std::getline(_fi_stream, _inc_rate,'\n');
+    std::getline(m_fiStream, m_firstNb, ',');
+    std::getline(m_fiStream, m_lastNb, ',');
+    m_intLastNb = std::stoi(m_lastNb);
+    std::getline(m_fiStream, m_incRate,'\n');
 
-    _int_first_nb = _int_last_nb;
-    _int_last_nb = nb;
-    _fo_stream << _stock_code << ',' << _stock_name << ',' << _int_first_nb << ',' << _int_last_nb << ',';
-    _fo_stream << std::setprecision(2) << (float(_int_last_nb - _int_first_nb) / _int_first_nb) << std::endl;
-    _stock_updated = true;
-	_stock_name = get_stock_name();
+    m_intFirstNb = m_intLastNb;
+    m_intLastNb = nb;
+    m_foStream << m_stockCode << ',' << m_stockName << ',' << m_intFirstNb << ',' << m_intLastNb << ',';
+    m_foStream << std::setprecision(2) << (float(m_intLastNb - m_intFirstNb) / m_intFirstNb) << std::endl;
+    m_stockUpdated = true;
+	m_stockName = GetStockName();
 	
 }
 
-const std::string data_stream::get_stock_name()
+const std::string DataStream::GetStockName()
 {
-	if (_stock_updated)
+	if (m_stockUpdated)
 	{
-		std::getline(_fi_stream, _stock_code, ',');
-		std::getline(_fi_stream, _stock_name, ',');
-		_stock_updated = false;
+		std::getline(m_fiStream, m_stockCode, ',');
+		std::getline(m_fiStream, m_stockName, ',');
+		m_stockUpdated = false;
     };
-    return _stock_name;
+    return m_stockName;
 }
 
-int data_stream::get_news_nb()
+bool DataStream::EoF()
 {
-    return 5;
-}
-
-bool data_stream::eof()
-{
-	return _fi_stream.eof();
+	return m_fiStream.eof();
 }

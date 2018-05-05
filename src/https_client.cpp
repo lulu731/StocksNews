@@ -9,7 +9,7 @@
 
 using boost::asio::ip::tcp;
 
-client::client(boost::asio::io_service& io_service,
+Client::Client(boost::asio::io_service& io_service,
     boost::asio::ssl::context& context,
     const std::string& server,
     const std::string& path)
@@ -30,28 +30,28 @@ client::client(boost::asio::io_service& io_service,
     // Start an asynchronous resolve to translate the server and service names
     // into a list of endpoints.
     tcp::resolver::query query(server, "https");
-    resolver_.async_resolve(query, boost::bind(&client::handle_resolve, this, boost::asio::placeholders::error,
+    resolver_.async_resolve(query, boost::bind(&Client::handle_resolve, this, boost::asio::placeholders::error,
                                        boost::asio::placeholders::iterator));
 }
 
-client::~client()
+Client::~Client()
 {
 }
 
-void client::handle_resolve(const boost::system::error_code& err, tcp::resolver::iterator endpoint_iterator)
+void Client::handle_resolve(const boost::system::error_code& err, tcp::resolver::iterator endpoint_iterator)
 {
     if(!err) {
 	socket_.set_verify_mode(boost::asio::ssl::verify_peer);
-	socket_.set_verify_callback(boost::bind(&client::verify_certificate, this, _1, _2));
+	socket_.set_verify_callback(boost::bind(&Client::verify_certificate, this, _1, _2));
 
 	boost::asio::async_connect(socket_.lowest_layer(), endpoint_iterator,
-	    boost::bind(&client::handle_connect, this, boost::asio::placeholders::error));
+	    boost::bind(&Client::handle_connect, this, boost::asio::placeholders::error));
     } else {
 	std::cout << "Error resolve: " << err.message() << "\n";
     }
 }
 
-bool client::verify_certificate(bool preverified, boost::asio::ssl::verify_context& ctx)
+bool Client::verify_certificate(bool preverified, boost::asio::ssl::verify_context& ctx)
 {
     // The verify callback can be used to check whether the certificate that is
     // being presented is valid for the peer. For example, RFC 2818 describes
@@ -68,43 +68,43 @@ bool client::verify_certificate(bool preverified, boost::asio::ssl::verify_conte
     return preverified;
 }
 
-void client::handle_connect(const boost::system::error_code& err)
+void Client::handle_connect(const boost::system::error_code& err)
 {
     if(!err) {
 	socket_.async_handshake(boost::asio::ssl::stream_base::client,
-	    boost::bind(&client::handle_handshake, this, boost::asio::placeholders::error));
+	    boost::bind(&Client::handle_handshake, this, boost::asio::placeholders::error));
     } else {
 	std::cout << "Connect failed: " << err.message() << "\n";
     }
 }
 
-void client::handle_handshake(const boost::system::error_code& error)
+void Client::handle_handshake(const boost::system::error_code& error)
 {
     if(!error) {
 	boost::asio::buffer_cast<const char*>(request_.data());
 
 	// The handshake was successful. Send the request.
 	boost::asio::async_write(
-	    socket_, request_, boost::bind(&client::handle_write_request, this, boost::asio::placeholders::error));
+	    socket_, request_, boost::bind(&Client::handle_write_request, this, boost::asio::placeholders::error));
     } else {
 	std::cout << "Handshake failed: " << error.message() << "\n";
     }
 }
 
-void client::handle_write_request(const boost::system::error_code& err)
+void Client::handle_write_request(const boost::system::error_code& err)
 {
     if(!err) {
 	// Read the response status line. The response_ streambuf will
 	// automatically grow to accommodate the entire line. The growth may be
 	// limited by passing a maximum size to the streambuf constructor.
 	boost::asio::async_read_until(socket_, response_, "\r\n",
-	    boost::bind(&client::handle_read_status_line, this, boost::asio::placeholders::error));
+	    boost::bind(&Client::handle_read_status_line, this, boost::asio::placeholders::error));
     } else {
 	std::cout << "Error write req: " << err.message() << "\n";
     }
 }
 
-void client::handle_read_status_line(const boost::system::error_code& err)
+void Client::handle_read_status_line(const boost::system::error_code& err)
 {
     if(!err) {
 	// Check that response is OK.
@@ -126,13 +126,13 @@ void client::handle_read_status_line(const boost::system::error_code& err)
 	}
 	// Read the response headers, which are terminated by a blank line.
 	boost::asio::async_read_until(socket_, response_, "\r\n\r\n",
-	    boost::bind(&client::handle_read_headers, this, boost::asio::placeholders::error));
+	    boost::bind(&Client::handle_read_headers, this, boost::asio::placeholders::error));
     } else {
 	std::cout << "Error: " << err.message() << "\n";
     }
 }
 
-void client::handle_read_headers(const boost::system::error_code& err)
+void Client::handle_read_headers(const boost::system::error_code& err)
 {
     if(!err) {
 	// Process the response headers.
@@ -145,13 +145,13 @@ void client::handle_read_headers(const boost::system::error_code& err)
 
 	// Start reading remaining data until EOF.
 	boost::asio::async_read(socket_, response_, boost::asio::transfer_at_least(1),
-	    boost::bind(&client::handle_read_content, this, boost::asio::placeholders::error));
+	    boost::bind(&Client::handle_read_content, this, boost::asio::placeholders::error));
     } else {
 	std::cout << "Error: " << err << "\n";
     }
 }
 
-void client::handle_read_content(const boost::system::error_code& err)
+void Client::handle_read_content(const boost::system::error_code& err)
 {
     if(!err) {
 	// Write all of the data that has been read so far.
@@ -159,13 +159,13 @@ void client::handle_read_content(const boost::system::error_code& err)
 
 	// Continue reading remaining data until EOF.
 	boost::asio::async_read(socket_, response_, boost::asio::transfer_at_least(1),
-	    boost::bind(&client::handle_read_content, this, boost::asio::placeholders::error));
+	    boost::bind(&Client::handle_read_content, this, boost::asio::placeholders::error));
     } else if(err != boost::asio::error::eof) {
 	std::cout << "Error: " << err << "\n";
     }
 }
 
-void client::get_response(std::stringstream& response)
+void Client::get_response(std::stringstream& response)
 {
     response << strstream_.str();
 };

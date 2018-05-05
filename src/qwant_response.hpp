@@ -9,14 +9,14 @@
 namespace qwant
 {
 
-class qwant_response
+class QwantResponse
 {
 public:
-    qwant_response(const std::string&);
-    int get_nb_news();
+    explicit QwantResponse(const std::string&);
+    int GetNbNews();
 
 private:
-    std::stringstream response_;
+    std::stringstream m_response;
 };
 }
 

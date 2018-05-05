@@ -9,13 +9,11 @@
 // Short alias for this namespace
 namespace pt = boost::property_tree;
 
-class json_tree
+class JsonTree
 {
 public:
-    json_tree(std::istream&);
-    //	~json_tree();
-    int get_int_value(const std::string&);
-
+    JsonTree(std::istream&);
+    int GetIntValue(const std::string&);
 private:
     pt::ptree _json_root;
 };

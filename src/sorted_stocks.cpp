@@ -6,10 +6,10 @@
 #include <sstream>
 #include <string>
 
-sorted_stocks::sorted_stocks(const std::string& data_base_name, int stocks_nb, bool up)
+SortedStocks::SortedStocks(const std::string& data_base_name, int stocks_nb, bool up)
 {
     std::fstream istream(data_base_name, std::ios_base::in);
-    _no_more_stocks = "No more stock available";
+    m_noMoreStocks = "No more stock available";
     while(!(istream.eof())) {
 	std::string line;
 	std::getline(istream, line, '\n');
@@ -20,20 +20,20 @@ sorted_stocks::sorted_stocks(const std::string& data_base_name, int stocks_nb, b
 	std::getline(line_stream, str, ',');
 	std::getline(line_stream, str, ','); // gets increasing rate
 	std::getline(line_stream, str);
-	_mmap_sorted_stocks.insert(std::make_pair(strtof(str.c_str(), NULL), line));
-	if(int(_mmap_sorted_stocks.size()) > stocks_nb) {
-	    auto it = _mmap_sorted_stocks.end();
+	m_mmapSortedStocks.insert(std::make_pair(strtof(str.c_str(), NULL), line));
+	if(int(m_mmapSortedStocks.size()) > stocks_nb) {
+	    auto it = m_mmapSortedStocks.end();
 	    --it;
-	    _mmap_sorted_stocks.erase(it);
+	    m_mmapSortedStocks.erase(it);
 	}
     }
-    _it_sorted_stocks = _mmap_sorted_stocks.begin();
+    m_itSortedStocks = m_mmapSortedStocks.begin();
 }
 
-const std::string& sorted_stocks::next_stock()
+const std::string& SortedStocks::NextStock()
 {
-    if(_it_sorted_stocks != _mmap_sorted_stocks.end()) {
-	return _it_sorted_stocks++->second;
+    if(m_itSortedStocks != m_mmapSortedStocks.end()) {
+	return m_itSortedStocks++->second;
     } else
-	return _no_more_stocks;
+	return m_noMoreStocks;
 }

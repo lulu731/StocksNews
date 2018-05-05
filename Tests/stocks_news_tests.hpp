@@ -3,7 +3,7 @@
 
 #include <string>
 
-extern const std::string& dir_stocks ;
-extern const std::string& expected_database ;
+extern const std::string& k_dirStocks ;
+extern const std::string& k_expectedDatabase ;
 
 #endif

@@ -8,15 +8,15 @@
 
 using boost::asio::ip::tcp;
 
-class client
+class Client
 {
 public:
-    client(boost::asio::io_service& io_service,
-        boost::asio::ssl::context& context,
-        const std::string& server,
-        const std::string& path);
-    ~client();
-    void get_response(std::stringstream& response);
+    Client(boost::asio::io_service&,
+        boost::asio::ssl::context&,
+        const std::string&,
+        const std::string&);
+    ~Client();
+    void get_response(std::stringstream&);
 
 private:
     void handle_resolve(const boost::system::error_code& err, tcp::resolver::iterator endpoint_iterator);
