@@ -67,12 +67,12 @@ BOOST_AUTO_TEST_CASE (data_stream_test_update_all)
     DataStream actual ("stocks/stocks_test_database.csv");
     int updated_value[] = {51, 52, 53, 46, 55, 56, 57, 58, 59, 60};
     unsigned int i = 0;
-    while (!(actual.EoF ()))
+    while (!(actual.EoF()))
 	{
-	    actual.GetStockName ();
-	    actual.UpdateNewsNb (updated_value[i++]);
+	    actual.GetStockName();
+	    actual.UpdateNewsNb(updated_value[i++]);
 	}
-    actual.CloseStream ();
+    actual.CloseStream();
 
     std::ifstream ifs_expected (k_expectedDatabase);
     std::istream_iterator<char> b_expected (ifs_expected), e_expected;
