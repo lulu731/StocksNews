@@ -16,7 +16,6 @@ int StocksNews::UpdateNews()
 	DataStream ds(m_SEData);
 	while (!(ds.EoF ()))
 	{
-	    std::cout << ds.GetStockName();
 		qwant::QwantResponse qr(ds.GetStockName ());
 	    ds.UpdateNewsNb (qr.GetNbNews());
 	};
@@ -32,6 +31,7 @@ std::string StocksNews::Results(int NbStocks)
 	while (!(str == "No more stock available"))
 	{
 		StrToReturn += str;
+		StrToReturn +="\n";
 		str = SStocks.NextStock();
 	}
 	return StrToReturn;

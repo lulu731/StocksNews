@@ -22,8 +22,7 @@ Client::Client(boost::asio::io_service& io_service,
     std::ostream request_stream(&request_);
 	request_stream <<  "GET " << path << " HTTP/1.0\r\n";
     request_stream << "Host: " << server << "\r\n";
-    request_stream << "User-Agent: HTTPTool/1.0"
-                   << "\r\n";
+    request_stream << "User-Agent: HTTPTool/1.0" << "\r\n";
     request_stream << "Accept: */*\r\n";
     request_stream << "Connection: close\r\n\r\n";
 
@@ -33,7 +32,6 @@ Client::Client(boost::asio::io_service& io_service,
     resolver_.async_resolve(query, boost::bind(&Client::handle_resolve, this, boost::asio::placeholders::error,
                                        boost::asio::placeholders::iterator));
 }
-
 
 void Client::handle_resolve(const boost::system::error_code& err, tcp::resolver::iterator endpoint_iterator)
 {
