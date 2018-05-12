@@ -26,7 +26,7 @@ Client::Client(boost::asio::io_service& io_service,
                    << "\r\n";
     request_stream << "Accept: */*\r\n";
     request_stream << "Connection: close\r\n\r\n";
-	
+
 	// Start an asynchronous resolve to translate the server and service names
     // into a list of endpoints.
     tcp::resolver::query query(server, "https");

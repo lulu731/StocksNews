@@ -6,6 +6,7 @@
 
 #include "https_client.hpp"
 #include "json_tree.hpp"
+#include <boost/algorithm/string.hpp>
 
 using boost::asio::ip::tcp;
 
@@ -16,9 +17,9 @@ qwant::QwantResponse::QwantResponse(const std::string& stock_name)
 	ctx.set_default_verify_paths();
 
 	boost::asio::io_service io_service;
-	std::string str = "/api/search/news?q=" + stock_name + "&freshness=week";
-	//std::cout << str << std::endl;
-	Client c(io_service, ctx, "api.qwant.com", str);
+	std::string str = stock_name;
+	boost::algorithm::replace_all(str, " ", "+");
+	Client c(io_service, ctx, "api.qwant.com", "/api/search/news?q=" + str + "&freshness=week");
 	io_service.run();
 	c.get_response(m_response);
     } catch(std::exception& e) {
