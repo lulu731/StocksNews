@@ -16,11 +16,13 @@ qwant::QwantResponse::QwantResponse(const std::string& stock_name)
 	ctx.set_default_verify_paths();
 
 	boost::asio::io_service io_service;
-	Client c(io_service, ctx, "api.qwant.com", "/api/search/news?q=" + stock_name + "&freshness=week");
+	std::string str = "/api/search/news?q=" + stock_name + "&freshness=week";
+	//std::cout << str << std::endl;
+	Client c(io_service, ctx, "api.qwant.com", str);
 	io_service.run();
 	c.get_response(m_response);
     } catch(std::exception& e) {
-	std::cout << "Exception: " << e.what() << "\n";
+	std::cout << "Exception in client.get_response : " << e.what() << "\n";
     };
 }
 

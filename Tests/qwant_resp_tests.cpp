@@ -10,4 +10,10 @@ BOOST_AUTO_TEST_CASE(nb_news)
 	BOOST_CHECK_GT(actual.GetNbNews(), 0);
 };
 
+BOOST_AUTO_TEST_CASE(code_name_with_space)
+{
+	qwant::QwantResponse actual("Air+France");
+	BOOST_CHECK_GT(actual.GetNbNews(), 0);
+};
+
 BOOST_AUTO_TEST_SUITE_END()

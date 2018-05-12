@@ -9,7 +9,6 @@
 StocksNews::StocksNews(const std::string& SE) //SE = Stock Exchange
 	: m_SEData("stocks/stocks_database_" + SE + ".csv")
 {
-	
 }
 
 int StocksNews::UpdateNews()
@@ -30,7 +29,7 @@ std::string StocksNews::Results(int NbStocks)
 	SortedStocks SStocks(m_SEData, NbStocks);
 	std::string StrToReturn;
 	std::string str(SStocks.NextStock());
-	while (!(str == "No more stock available")) 
+	while (!(str == "No more stock available"))
 	{
 		StrToReturn += str;
 		str = SStocks.NextStock();

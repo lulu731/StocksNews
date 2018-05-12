@@ -15,7 +15,6 @@ public:
         boost::asio::ssl::context&,
         const std::string&,
         const std::string&);
-    ~Client();
     void get_response(std::stringstream&);
 
 private:
