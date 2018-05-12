@@ -1,6 +1,6 @@
-#!/usr/bin/sh
+#!/bin/bash
 
-lulu731=/home/travis/build/lulu731/
+lulu731=/home/travis/build/lulu731
 cd $lulu731
 mkdir boost
 cd boost
