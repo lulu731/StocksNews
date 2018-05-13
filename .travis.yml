@@ -1,13 +1,17 @@
 language: cpp
 
 before_install:
-  - chmod +x install-dependencies.sh
-  - ./install-dependencies.sh
+  - chmod +x scripts/install-dependencies.sh
+  - ./scripts/install-dependencies.sh
 
 script:
-  - cd Tests
-  - mkdir build
-  - cd build
-  - cmake -G "Unix Makefiles" ..
-  - make
-  - ./tests
+  - chmod +x scripts/test-units.sh
+  - ./scripts/test-units.sh
+  - chmod +x scripts/build-stocksnews.sh
+  - ./scripts/build-stocksnews.sh
+
+after_success:
+  - cd /home/travis/build/lulu731/StocksNews/build
+  - cp -r stocks/ .
+  - ./stocksnews
+
