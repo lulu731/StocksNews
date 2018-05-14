@@ -1,13 +1,11 @@
 #!/bin/bash
 
 lulu731=/home/travis/build/lulu731
-do
-  cd $lulu731/StocksNews
+(
+  cd /home/travis/build/lulu731/StocksNews || exit
   mkdir build
   cd build
   cmake -G "Unix Makefiles" ..
   make
   cd ..
-done
-
-
+)

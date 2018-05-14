@@ -10,10 +10,9 @@ SortedStocks::SortedStocks(const std::string& data_base_name, int stocks_nb, boo
 {
     std::fstream istream(data_base_name, std::ios_base::in);
     m_noMoreStocks = "No more stock available";
-    
 	std::string line;
 	std::getline(istream, line, '\n');
-	while(!(istream.eof())) 
+	while(!(istream.eof()))
 	{
 	std::istringstream line_stream(line);
 	std::string str;
@@ -23,7 +22,7 @@ SortedStocks::SortedStocks(const std::string& data_base_name, int stocks_nb, boo
 	std::getline(line_stream, str, ','); // gets increasing rate
 	std::getline(line_stream, str);
 	m_mmapSortedStocks.insert(std::make_pair(strtof(str.c_str(), nullptr), line));
-	if(int(m_mmapSortedStocks.size()) > stocks_nb) 
+	if(int(m_mmapSortedStocks.size()) > stocks_nb)
 	{
 	    auto it = m_mmapSortedStocks.end();
 	    --it;
