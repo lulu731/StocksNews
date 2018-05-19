@@ -5,13 +5,14 @@ before_install:
   - ./scripts/install-dependencies.sh
 
 script:
-  - chmod +x scripts/test-units.sh
-  - ./scripts/test-units.sh
   - chmod +x scripts/build-stocksnews.sh
   - ./scripts/build-stocksnews.sh
+  - chmod +x scripts/test-units.sh
+  - ./scripts/test-units.sh
 
 after_success:
   - cd /home/travis/build/lulu731/StocksNews/build
-  - cp -r stocks/ .
   - ./stocksnews
+  - cd ~
+  - pwd
 
