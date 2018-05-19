@@ -1,6 +1,6 @@
 #!/bin/bash
 
-lulu731=/home/travis/build/lulu731
+lulu731=~/build/lulu731
 cd $lulu731
 mkdir boost
 cd boost
@@ -10,6 +10,3 @@ cd boost_1_67_0
 ./bootstrap.sh --prefix=../installation --with-libraries=test,system,filesystem
 ./b2 -d0 install
 cd $lulu731/StocksNews
-
-
-

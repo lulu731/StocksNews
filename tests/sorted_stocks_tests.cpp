@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(sort_stocks_with_neg_val)
 {
 	if(!boost::filesystem::exists("stocks/stocks_test_database_with_neg_val.csv")) {
 	    boost::filesystem::copy_file(
-	        "../stocks/stocks_test_database_with_neg_val.csv", "stocks/stocks_test_database_with_neg_val.csv", 
+	        "../stocks/stocks_test_database_with_neg_val.csv", "stocks/stocks_test_database_with_neg_val.csv",
 			boost::filesystem::copy_option::overwrite_if_exists);
 	}
 	SortedStocks actual("stocks/stocks_test_database_with_neg_val.csv", 5);

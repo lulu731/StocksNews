@@ -11,8 +11,5 @@ script:
   - ./scripts/test-units.sh
 
 after_success:
-  - cd /home/travis/build/lulu731/StocksNews/build
-  - ./stocksnews
-  - cd ~
-  - pwd
-
+  - - chmod +x scripts/test-stocksnews.sh
+  - ./scripts/test-stocksnews.sh

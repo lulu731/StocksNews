@@ -14,7 +14,7 @@ qwant::QwantResponse::QwantResponse(const std::string& stock_name)
 {
     std::string str = stock_name;
 	boost::algorithm::replace_all(str, " ", "+");
-	
+
 	const unsigned int MaxNbRetry(3);
 	for( unsigned int i = 0; i  < MaxNbRetry; i++ )
 	{
@@ -26,7 +26,7 @@ qwant::QwantResponse::QwantResponse(const std::string& stock_name)
 		io_service.run();
 		c.get_response(m_response);
 		break;
-		} catch(std::exception& e) 
+		} catch(std::exception& e)
 		{
 			std::cout << "Exception in client.get_response : " << e.what() << "\n";
 		};
