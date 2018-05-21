@@ -10,6 +10,6 @@ lulu731=/home/travis/build/lulu731
   exit_val = $?
   cp -r ../stocks/ .
   cd ..
+  exit $exit_val
 )
-exit $exit_val 
 
