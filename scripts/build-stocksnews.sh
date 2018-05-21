@@ -9,4 +9,5 @@ lulu731=/home/travis/build/lulu731
   make
   cp -r ../stocks/ .
   cd ..
+  exit $?
 )
