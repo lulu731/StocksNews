@@ -7,6 +7,7 @@ FILE(GLOB TESTSSRCS "*.cpp" "*.hpp")
 set(BOOST_INSTALLATION "../../boost/installation")
 include_directories(${BOOST_INSTALLATION}/include)
 add_executable(${PROJECT_NAME} ${TESTSSRCS} $<TARGET_OBJECTS:objsrcs>)
+add_definitions(-std=c++11)
 
 find_library(BOOST_TEST NAMES boost_unit_test_framework PATHS ${BOOST_INSTALLATION}/lib)
 find_library(BOOST_SYST NAMES boost_system PATHS ${BOOST_INSTALLATION}/lib)

@@ -8,6 +8,7 @@ project(${PROJECT_NAME})
 FILE(GLOB SRCS "main.cpp")
 
 add_executable(${PROJECT_NAME} ${SRCS}  $<TARGET_OBJECTS:objsrcs>)
+add_definitions(-std=c++11)
 
 set(BOOST_INSTALLATION "../boost/installation")
 include_directories(${BOOST_INSTALLATION}/include)

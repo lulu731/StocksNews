@@ -2,8 +2,9 @@
 
 stocksnews=~/build/lulu731/StocksNews
 (
- cd $stocksnews/build || exit
+ cd $stocksnews/build || exit $?
  make test
+ exit_val=$?
  cd $stocksnews
- exit $? 
+ exit $exit_val 
 )
