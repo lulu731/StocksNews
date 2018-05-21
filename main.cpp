@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 		help();
 		return 0;
 	};
-	
+
 	string Argv1(argv[1]);
 	StocksNews sn(Argv1);
 	string Argv2(argv[2]);
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 	if (Argv2 == "--display") {
 		ArgValue = display;
 	}
-		
+
 	switch(ArgValue){
 		case update : {
 			sn.UpdateNews();

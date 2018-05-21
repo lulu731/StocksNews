@@ -3,6 +3,6 @@
 stocksnews=~/build/lulu731/StocksNews
 (
  cd $stocksnews/build || exit
- ctest
+ make test
  cd $stocksnews 
 )
