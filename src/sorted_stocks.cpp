@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>
 
-SortedStocks::SortedStocks(const std::string& data_base_name, int stocks_nb, bool up)
+SortedStocks::SortedStocks(const std::string& data_base_name, int stocks_nb)
 {
     std::fstream istream(data_base_name, std::ios_base::in);
     m_noMoreStocks = "No more stock available";

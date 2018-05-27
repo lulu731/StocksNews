@@ -7,7 +7,7 @@
 class SortedStocks
 {
 public:
-    SortedStocks(const std::string&, int, bool = true);
+    SortedStocks(const std::string&, int);
     const std::string& NextStock();
 
 private:
