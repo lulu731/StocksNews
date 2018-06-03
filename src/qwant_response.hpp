@@ -14,9 +14,9 @@ class QwantResponse
 public:
     explicit QwantResponse(const std::string&);
     int GetNbNews();
-
 private:
-    std::stringstream m_response;
+	std::string m_stockName;
+	std::stringstream m_response;
 };
 }
 

@@ -2,11 +2,27 @@
 #define HTTPS_CLIENT_H
 
 #include <sstream>
+#include <stdexcept>
 
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
 
 using boost::asio::ip::tcp;
+
+class HttpException : public std::exception
+{
+public:
+	HttpException(const std::string&);
+	const char* what();
+private:
+	const std::string& m_msg;
+};
+
+class HttpReadStatusException : public HttpException 
+{	
+public:
+	HttpReadStatusException(const std::string&);
+};
 
 class Client
 {

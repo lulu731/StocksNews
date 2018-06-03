@@ -19,13 +19,14 @@ Client::Client(boost::asio::io_service& io_service,
     // Form the request. We specify the "Connection: close" header so that the
     // server will close the socket after transmitting the response. This will
     // allow us to treat all data up until the EOF as the content.
-    std::ostream request_stream(&request_);
-	request_stream <<  "GET " << path << " HTTP/1.0\r\n";
+	std::ostream request_stream(&request_);
+	
+	request_stream <<  "GET " << path << " HTTP/1.0" << "\r\n";
     request_stream << "Host: " << server << "\r\n";
-    request_stream << "User-Agent: HTTPTool/1.0" << "\r\n";
-    request_stream << "Accept: */*\r\n";
+	request_stream << "User-Agent: HTTPTool/1.0" << "\r\n";
+    request_stream << "Content-Type: text/plain; charset=utf-8" << "\r\n" ;
+	request_stream << "Accept: application/json\r\n";
     request_stream << "Connection: close\r\n\r\n";
-
 	// Start an asynchronous resolve to translate the server and service names
     // into a list of endpoints.
     tcp::resolver::query query(server, "https");
@@ -42,7 +43,7 @@ void Client::handle_resolve(const boost::system::error_code& err, tcp::resolver:
 	boost::asio::async_connect(socket_.lowest_layer(), endpoint_iterator,
 	    boost::bind(&Client::handle_connect, this, boost::asio::placeholders::error));
     } else {
-	std::cout << "Error resolve: " << err.message() << "\n";
+		throw HttpException("Error resolve: " + err.message());
     }
 }
 
@@ -69,7 +70,7 @@ void Client::handle_connect(const boost::system::error_code& err)
 	socket_.async_handshake(boost::asio::ssl::stream_base::client,
 	    boost::bind(&Client::handle_handshake, this, boost::asio::placeholders::error));
     } else {
-	std::cout << "Connect failed: " << err.message() << "\n";
+		throw HttpException("Connect failed: " + err.message());
     }
 }
 
@@ -77,13 +78,13 @@ void Client::handle_handshake(const boost::system::error_code& error)
 {
     if(!error) {
 	boost::asio::buffer_cast<const char*>(request_.data());
-
+	
 	// The handshake was successful. Send the request.
 
 	boost::asio::async_write(
 	    socket_, request_, boost::bind(&Client::handle_write_request, this, boost::asio::placeholders::error));
     } else {
-	std::cout << "Handshake failed: " << error.message() << "\n";
+		throw HttpException("Handshake failed: " + error.message()); 
     }
 }
 
@@ -96,7 +97,7 @@ void Client::handle_write_request(const boost::system::error_code& err)
 	boost::asio::async_read_until(socket_, response_, "\r\n",
 	    boost::bind(&Client::handle_read_status_line, this, boost::asio::placeholders::error));
     } else {
-	std::cout << "Error write req: " << err.message() << "\n";
+				throw HttpException("Error write req: " + err.message());
     }
 }
 
@@ -104,28 +105,31 @@ void Client::handle_read_status_line(const boost::system::error_code& err)
 {
     if(!err) {
 	// Check that response is OK.
-	std::istream response_stream(&response_);
-	std::string http_version;
-	response_stream >> http_version;
-	unsigned int status_code;
-	response_stream >> status_code;
-	std::string status_message;
-	std::getline(response_stream, status_message);
-	if(!response_stream || http_version.substr(0, 5) != "HTTP/") {
-	    std::cout << "Invalid response\n";
-	    return;
-	}
-	if(status_code != 200) {
-	    std::cout << "Response returned with status code ";
-	    std::cout << status_code << "\n";
-	    return;
-	}
+		std::istream response_stream(&response_);
+		std::string http_version;
+		response_stream >> http_version;
+		unsigned int status_code;
+		response_stream >> status_code;
+		std::string status_message;
+		std::getline(response_stream, status_message);	
+		
+		if(!response_stream || http_version.substr(0, 5) != "HTTP/") {
+			std::cout << "Invalid response\n";
+			return;
+		}
+	
+		if(status_code != 200) {
+			std::cout << "Response returned with status code ";
+			std::cout << status_code << "\n";
+			return;
+		}
 	// Read the response headers, which are terminated by a blank line.
-	boost::asio::async_read_until(socket_, response_, "\r\n\r\n",
-	    boost::bind(&Client::handle_read_headers, this, boost::asio::placeholders::error));
-    } else {
-	std::cout << "Error Client.handle_read_status_line : " << err.message() << "\n";
-    }
+		boost::asio::async_read_until(socket_, response_, "\r\n\r\n",
+			boost::bind(&Client::handle_read_headers, this, boost::asio::placeholders::error));
+	} else 
+		{
+			throw HttpReadStatusException("Error Client.handle_read_status_line : " + err.message());
+		}
 }
 
 void Client::handle_read_headers(const boost::system::error_code& err)
@@ -143,7 +147,7 @@ void Client::handle_read_headers(const boost::system::error_code& err)
 	boost::asio::async_read(socket_, response_, boost::asio::transfer_at_least(1),
 	    boost::bind(&Client::handle_read_content, this, boost::asio::placeholders::error));
     } else {
-	std::cout << "Error in Client.handle_read_headers : " << err << "\n";
+		throw HttpException("Error in Client.handle_read_headers : " + err.message());
     }
 }
 
@@ -157,7 +161,7 @@ void Client::handle_read_content(const boost::system::error_code& err)
 	boost::asio::async_read(socket_, response_, boost::asio::transfer_at_least(1),
 	    boost::bind(&Client::handle_read_content, this, boost::asio::placeholders::error));
     } else if(err != boost::asio::error::eof) {
-	std::cout << "Error in Client.handle read_content : " << err << "\n";
+			throw HttpException("Error in Client.handle read_content : " + err.message());
     }
 }
 
@@ -165,3 +169,17 @@ void Client::get_response(std::stringstream& response)
 {
     response << strstream_.str();
 };
+
+HttpException::HttpException(const std::string& msg) :
+	m_msg("HTTP exception - " + msg)
+{
+}
+
+const char* HttpException::what()
+{
+	return m_msg.c_str();
+}
+
+HttpReadStatusException::HttpReadStatusException(const std::string& msg) :
+	HttpException(msg){};
+

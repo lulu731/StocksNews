@@ -14,10 +14,17 @@ StocksNews::StocksNews(const std::string& SE) //SE = Stock Exchange
 int StocksNews::UpdateNews()
 {
 	DataStream ds(m_SEData);
+	int i(1);
 	while (!(ds.EoF ()))
 	{
-		qwant::QwantResponse qr(ds.GetStockName ());
-	    ds.UpdateNewsNb (qr.GetNbNews());
+		std::string StocksName(ds.GetStockName ());
+		std::cout << i++ << " - updating "  << StocksName << " - ";
+		//i = i +1;
+		qwant::QwantResponse qr(StocksName);
+		int NbNews(qr.GetNbNews());
+		std::cout << NbNews ;
+		ds.UpdateNewsNb (NbNews);
+		std::cout << " - updated" << std::endl;
 	};
     ds.CloseStream ();
 	return 1; //todo : return error code
