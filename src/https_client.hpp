@@ -15,11 +15,11 @@ public:
 	HttpException(const std::string&);
 	const char* what();
 private:
-	const std::string& m_msg;
+	const std::string m_msg;
 };
 
-class HttpReadStatusException : public HttpException 
-{	
+class HttpReadStatusException : public HttpException
+{
 public:
 	HttpReadStatusException(const std::string&);
 };

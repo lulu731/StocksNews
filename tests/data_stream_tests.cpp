@@ -3,6 +3,9 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <limits>
+#include <cstdlib>
+#include <cstdint>
 
 #include "stocks_news_tests.hpp"
 #include <boost/filesystem.hpp>
@@ -79,6 +82,50 @@ BOOST_AUTO_TEST_CASE (data_stream_test_update_all)
     std::ifstream ifs_actual (k_dirStocks + "/stocks_test_database.csv");
     std::istream_iterator<char> b_actual (ifs_actual), e_actual;
     BOOST_CHECK_EQUAL_COLLECTIONS (b_actual, e_actual, b_expected, e_expected);
+}
+
+BOOST_AUTO_TEST_CASE (data_stream_test_from_zero)
+{
+	DataStream actual ("stocks/stocks_with_zero_test_database.csv");
+    while (!(actual.EoF()))
+	{
+	    actual.GetStockName();
+	    actual.UpdateNewsNb(2);
+	}
+    actual.CloseStream();
+	std::fstream Stream("stocks/stocks_with_zero_test_database.csv");
+	float flRate;
+	std::string str;
+	std::getline(Stream, str, ',');
+	std::getline(Stream, str, ',');
+	std::getline(Stream, str, ',');
+	std::getline(Stream, str, ',');
+	std::getline(Stream, str);
+	char* end;
+	flRate = std::strtof(str.c_str(), &end);
+	BOOST_CHECK_EQUAL(flRate,  std::numeric_limits<float>::infinity());
+}
+
+BOOST_AUTO_TEST_CASE (data_stream_test_from_and_update_zero)
+{
+	DataStream actual ("stocks/stocks_with_zero_test_database.csv");
+    while (!(actual.EoF()))
+	{
+	    actual.GetStockName();
+	    actual.UpdateNewsNb(0);
+	}
+    actual.CloseStream();
+	std::fstream Stream("stocks/stocks_with_zero_test_database.csv");
+	float Rate;
+	std::string str;
+	std::getline(Stream, str, ',');
+	std::getline(Stream, str, ',');
+	std::getline(Stream, str, ',');
+	std::getline(Stream, str, ',');
+	std::getline(Stream, str);
+	char* end;
+	Rate = std::strtof(str.c_str(), &end);
+	BOOST_CHECK_EQUAL(Rate, 0);
 }
 
 BOOST_AUTO_TEST_SUITE_END ()

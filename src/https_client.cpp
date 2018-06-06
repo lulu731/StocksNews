@@ -20,7 +20,7 @@ Client::Client(boost::asio::io_service& io_service,
     // server will close the socket after transmitting the response. This will
     // allow us to treat all data up until the EOF as the content.
 	std::ostream request_stream(&request_);
-	
+
 	request_stream <<  "GET " << path << " HTTP/1.0" << "\r\n";
     request_stream << "Host: " << server << "\r\n";
 	request_stream << "User-Agent: HTTPTool/1.0" << "\r\n";
@@ -78,13 +78,13 @@ void Client::handle_handshake(const boost::system::error_code& error)
 {
     if(!error) {
 	boost::asio::buffer_cast<const char*>(request_.data());
-	
+
 	// The handshake was successful. Send the request.
 
 	boost::asio::async_write(
 	    socket_, request_, boost::bind(&Client::handle_write_request, this, boost::asio::placeholders::error));
     } else {
-		throw HttpException("Handshake failed: " + error.message()); 
+		throw HttpException("Handshake failed: " + error.message());
     }
 }
 
@@ -111,13 +111,13 @@ void Client::handle_read_status_line(const boost::system::error_code& err)
 		unsigned int status_code;
 		response_stream >> status_code;
 		std::string status_message;
-		std::getline(response_stream, status_message);	
-		
+		std::getline(response_stream, status_message);
+
 		if(!response_stream || http_version.substr(0, 5) != "HTTP/") {
 			std::cout << "Invalid response\n";
 			return;
 		}
-	
+
 		if(status_code != 200) {
 			std::cout << "Response returned with status code ";
 			std::cout << status_code << "\n";
@@ -126,7 +126,7 @@ void Client::handle_read_status_line(const boost::system::error_code& err)
 	// Read the response headers, which are terminated by a blank line.
 		boost::asio::async_read_until(socket_, response_, "\r\n\r\n",
 			boost::bind(&Client::handle_read_headers, this, boost::asio::placeholders::error));
-	} else 
+	} else
 		{
 			throw HttpReadStatusException("Error Client.handle_read_status_line : " + err.message());
 		}

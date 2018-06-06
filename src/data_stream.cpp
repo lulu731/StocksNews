@@ -1,10 +1,10 @@
 #include "data_stream.hpp"
 
-#include <cstdlib>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <limits>
 
 #include <boost/filesystem.hpp>
 
@@ -38,7 +38,15 @@ void DataStream::UpdateNewsNb(const int nb)
     m_intFirstNb = m_intLastNb;
     m_intLastNb = nb;
     m_foStream << m_stockCode << ',' << m_stockName << ',' << m_intFirstNb << ',' << m_intLastNb << ',';
-    m_foStream << std::setprecision(2) << (float(m_intLastNb - m_intFirstNb) / m_intFirstNb) << std::endl;
+	float flRate;
+	if (m_intFirstNb == 0 && nb == 0)
+		{
+			flRate = 0;
+		} else {
+		flRate = (float(m_intLastNb - m_intFirstNb) / m_intFirstNb) ;
+		} ;
+	m_foStream << std::setprecision(2) <<  flRate << std::endl;
+	
     m_stockUpdated = true;
 	m_stockName = GetStockName();
 }
