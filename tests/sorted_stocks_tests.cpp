@@ -8,9 +8,9 @@ struct fixture_copy_expected_database {
     {
 	if(!boost::filesystem::exists(k_expectedDatabase)) {
 	    boost::filesystem::copy_file(
-	        "../" + k_expectedDatabase, k_expectedDatabase, boost::filesystem::copy_option::overwrite_if_exists);
-	};
-    };
+	        "../" + k_expectedDatabase, k_expectedDatabase);
+	}
+    }
 };
 
 BOOST_FIXTURE_TEST_SUITE(sorted_stocks_suite, fixture_copy_expected_database)
