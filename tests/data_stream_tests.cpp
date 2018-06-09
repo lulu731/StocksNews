@@ -37,8 +37,8 @@ BOOST_FIXTURE_TEST_SUITE (data_stream_suite, fixture_dir_stocks)
 BOOST_AUTO_TEST_CASE (data_stream_test)
 {
     DataStream actual ("stocks/stocks_test_database.csv");
-    int updated_value[5] = {51, 52, 53, 46, 55};
-    for (unsigned int i = 0; i < 5; i++)
+    int updated_value[6] = {51, 52, 53, 46, 55, 49};
+    for (unsigned int i = 0; i < 6; i++)
 	{
 	    actual.GetStockName ();
 	    actual.UpdateNewsNb (updated_value[i]);
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE (data_stream_no_update_test)
 BOOST_AUTO_TEST_CASE (data_stream_test_update_all)
 {
     DataStream actual ("stocks/stocks_test_database.csv");
-    int updated_value[] = {51, 52, 53, 46, 55, 56, 57, 58, 59, 60};
+    int updated_value[] = {51, 52, 53, 46, 55, 49, 57, 58, 59, 60};
     unsigned int i = 0;
     while (!(actual.EoF()))
 	{

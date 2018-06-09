@@ -26,7 +26,7 @@ target_link_libraries(${PROJECT_NAME} ${BOOST_CHRONO} ${BOOST_SYST} ${BOOST_FILE
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ~/stocks_news CONFIGURATIONS Release)
 install(FILES ${CMAKE_SOURCE_DIR}/stocks/stocks_database_Paris.csv DESTINATION ~/stocks_news/stocks 
 	CONFIGURATIONS Release)
-	
+
 include(CTest)
 add_test(snHelp ${PROJECT_NAME} ForTest)
 set_tests_properties(snHelp PROPERTIES PASS_REGULAR_EXPRESSION "usage : stocksnews Paris --update\nstocksnews Paris --display 3")
