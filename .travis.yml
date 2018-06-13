@@ -11,5 +11,5 @@ script:
   - ./scripts/test-units.sh
 
 after_success:
-  - - chmod +x scripts/test-stocksnews.sh
+  - chmod +x scripts/test-stocksnews.sh
   - ./scripts/test-stocksnews.sh
