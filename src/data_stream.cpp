@@ -46,7 +46,7 @@ void DataStream::UpdateNewsNb(const int nb)
 		flRate = (float(m_intLastNb - m_intFirstNb) / m_intFirstNb) ;
 		} ;
 	m_foStream << std::setprecision(2) <<  flRate << std::endl;
-	
+
     m_stockUpdated = true;
 	m_stockName = GetStockName();
 }

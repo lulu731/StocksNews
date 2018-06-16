@@ -1,13 +1,9 @@
 #!/bin/bash
 
-#stocksnews=~/build/lulu731/StocksNews
-
-# cd $stocksnews/build/tests || exit
-  cd build/tests
- ./tests
- exit_val=$?
-# cd $stocksnews
- cd ..
- cd ..
+cd build/tests
+./tests
+exit_val=$?
+# cd ..
+# cd ..
  exit $exit_val
 

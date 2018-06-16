@@ -7,15 +7,15 @@ using namespace std;
 const int update(1), display(2);
 
 void help() {
-		cout << "usage : stocksnews Paris --update" << endl;
-		cout << "stocksnews Paris --display 3" << endl;
+		cout << "usage : ./stocksnews Paris --update" << endl;
+		cout << "./stocksnews Paris --display 3" << endl;
 }
 
 int main(int argc, char **argv)
 {
 	if (argc < 3) {
 		help();
-		return 0;
+		return EXIT_FAILURE;
 	};
 
 	string Argv1(argv[1]);
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 			break;
 		}
 		default : help();
-						break;
+			break;
 	}
-	return 0;
+	return EXIT_SUCCESS;
 }
