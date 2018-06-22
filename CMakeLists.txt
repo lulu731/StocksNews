@@ -24,8 +24,8 @@ find_library(BOOST_CHRONO NAMES boost_chrono PATHS ${BOOST_INSTALLATION}/lib)
 target_link_libraries(${PROJECT_NAME} ${BOOST_CHRONO} ${BOOST_SYST} ${BOOST_FILE_SYST} ${BOOST_TIMER} ${THREAD} ${SSL} ${CRYPTO})
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ~/stocks_news CONFIGURATIONS Release)
-install(FILES ${CMAKE_SOURCE_DIR}/stocks/stocks_database_Paris.csv DESTINATION ~/stocks_news/stocks 
-	CONFIGURATIONS Release)
+#install(FILES ${CMAKE_SOURCE_DIR}/stocks/stocks_database_Paris.csv DESTINATION ~/stocks_news/stocks 
+#	CONFIGURATIONS Release)
 
 include(CTest)
 add_test(snHelp ${PROJECT_NAME} ForTest)

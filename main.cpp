@@ -4,11 +4,12 @@
 
 using namespace std;
 
-const int update(1), display(2);
+const int update(1), maxrate(2), maxnumbers(3);
 
 void help() {
-		cout << "usage : ./stocksnews Paris --update" << endl;
-		cout << "./stocksnews Paris --display 3" << endl;
+		printf("usage : ./stocksnews Paris --update\n");
+		printf("./stocksnews Paris --maxrate 3\n");
+		printf("./stocksnews Paris --maxnumbers 5\n");
 }
 
 int main(int argc, char **argv)
@@ -25,16 +26,23 @@ int main(int argc, char **argv)
 	if (Argv2 == "--update") {
 		ArgValue = update;
 	}
-	if (Argv2 == "--display") {
-		ArgValue = display;
+	if (Argv2 == "--maxrate") {
+		ArgValue = maxrate;
 	}
-
+if (Argv2 == "--maxnumbers") {
+		ArgValue = maxnumbers;
+	}
 	switch(ArgValue){
 		case update : {
 			sn.UpdateNews();
 			break;
 		}
-		case display : {
+		case maxrate : {
+			string Argv3(argv[3]);
+			cout <<  sn.Results(stoi(Argv3)) ;
+			break;
+		}
+		case maxnumbers : {
 			string Argv3(argv[3]);
 			cout <<  sn.Results(stoi(Argv3)) ;
 			break;
