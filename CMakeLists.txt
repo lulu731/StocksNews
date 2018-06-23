@@ -29,7 +29,8 @@ install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ~/stocks_news CONFIGURATIONS
 
 include(CTest)
 add_test(snHelp ${PROJECT_NAME} ForTest)
-set_tests_properties(snHelp PROPERTIES PASS_REGULAR_EXPRESSION "usage : stocksnews Paris --update\nstocksnews Paris --display 3")
+set_tests_properties(snHelp PROPERTIES PASS_REGULAR_EXPRESSION 
+	"usage : ./stocksnews Paris --update\n./stocksnews Paris --maxrate 3\n./stocksnews Paris --maxnumbers 5\n")
 
 add_test(snUpdate ${PROJECT_NAME} ForTest --update)
 set_tests_properties(snUpdate PROPERTIES PASS_REGULAR_EXPRESSION "")
