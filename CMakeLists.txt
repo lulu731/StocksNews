@@ -24,14 +24,15 @@ find_library(BOOST_CHRONO NAMES boost_chrono PATHS ${BOOST_INSTALLATION}/lib)
 target_link_libraries(${PROJECT_NAME} ${BOOST_CHRONO} ${BOOST_SYST} ${BOOST_FILE_SYST} ${BOOST_TIMER} ${THREAD} ${SSL} ${CRYPTO})
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ~/stocks_news CONFIGURATIONS Release)
-install(FILES ${CMAKE_SOURCE_DIR}/stocks/stocks_database_Paris.csv DESTINATION ~/stocks_news/stocks 
-	CONFIGURATIONS Release)
+#install(FILES ${CMAKE_SOURCE_DIR}/stocks/stocks_database_Paris.csv DESTINATION ~/stocks_news/stocks 
+#	CONFIGURATIONS Release)
 
 include(CTest)
 add_test(snHelp ${PROJECT_NAME} ForTest)
-set_tests_properties(snHelp PROPERTIES PASS_REGULAR_EXPRESSION "usage : stocksnews Paris --update\nstocksnews Paris --display 3")
+set_tests_properties(snHelp PROPERTIES PASS_REGULAR_EXPRESSION 
+	"usage : ./stocksnews Paris --update\n./stocksnews Paris --maxrate 3\n./stocksnews Paris --maxnumbers 5\n")
 
 add_test(snUpdate ${PROJECT_NAME} ForTest --update)
 set_tests_properties(snUpdate PROPERTIES PASS_REGULAR_EXPRESSION "")
 
-add_test(snDisplay ${PROJECT_NAME} ForTest --display 3)
+add_test(snDisplay ${PROJECT_NAME} ForTest --maxrate 3)

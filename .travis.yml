@@ -10,6 +10,6 @@ script:
   - chmod +x scripts/test-units.sh
   - ./scripts/test-units.sh
 
-after_success:
+#after_success:
   - chmod +x scripts/test-stocksnews.sh
   - ./scripts/test-stocksnews.sh

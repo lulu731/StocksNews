@@ -30,9 +30,9 @@ int StocksNews::UpdateNews()
 	return 1; //todo : return error code
 }
 
-std::string StocksNews::Results(int NbStocks)
+std::string StocksNews::Results(int NbStocks, ResultType RT)
 {
-	SortedStocks SStocks(m_SEData, NbStocks);
+	SortedStocks SStocks(m_SEData, NbStocks, RT);
 	std::string StrToReturn;
 	std::string str(SStocks.NextStock());
 	while (!(str == "No more stock available"))

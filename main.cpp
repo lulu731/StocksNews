@@ -4,11 +4,14 @@
 
 using namespace std;
 
-const int update(1), display(2);
+enum ArgValue {
+	novalue, update, maxrate, maxnumbers
+};
 
 void help() {
-		cout << "usage : ./stocksnews Paris --update" << endl;
-		cout << "./stocksnews Paris --display 3" << endl;
+		printf("usage : ./stocksnews Paris --update\n");
+		printf("./stocksnews Paris --maxrate 3\n");
+		printf("./stocksnews Paris --maxnumbers 5\n");
 }
 
 int main(int argc, char **argv)
@@ -21,22 +24,25 @@ int main(int argc, char **argv)
 	string Argv1(argv[1]);
 	StocksNews sn(Argv1);
 	string Argv2(argv[2]);
-	int ArgValue;
-	if (Argv2 == "--update") {
-		ArgValue = update;
-	}
-	if (Argv2 == "--display") {
-		ArgValue = display;
-	}
-
-	switch(ArgValue){
+	ArgValue aArgValue(novalue);
+	
+	if (Argv2 == "--update") {aArgValue = update;}
+	if (Argv2 == "--maxrate") {aArgValue = maxrate;}
+	if (Argv2 == "--maxnumbers") {aArgValue = maxnumbers;}
+	
+	switch(aArgValue){
 		case update : {
 			sn.UpdateNews();
 			break;
 		}
-		case display : {
+		case maxrate : {
 			string Argv3(argv[3]);
-			cout <<  sn.Results(stoi(Argv3)) ;
+			cout <<  sn.Results(stoi(Argv3), MaxRate) ;
+			break;
+		}
+		case maxnumbers : {
+			string Argv3(argv[3]);
+			cout <<  sn.Results(stoi(Argv3), MaxNumbers) ;
 			break;
 		}
 		default : help();
