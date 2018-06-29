@@ -35,4 +35,4 @@ set_tests_properties(snHelp PROPERTIES PASS_REGULAR_EXPRESSION
 add_test(snUpdate ${PROJECT_NAME} ForTest --update)
 set_tests_properties(snUpdate PROPERTIES PASS_REGULAR_EXPRESSION "")
 
-add_test(snDisplay ${PROJECT_NAME} ForTest --display 3)
+add_test(snDisplay ${PROJECT_NAME} ForTest --maxrate 3)

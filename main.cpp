@@ -4,7 +4,9 @@
 
 using namespace std;
 
-const int update(1), maxrate(2), maxnumbers(3);
+enum ArgValue {
+	novalue, update, maxrate, maxnumbers
+};
 
 void help() {
 		printf("usage : ./stocksnews Paris --update\n");
@@ -22,29 +24,25 @@ int main(int argc, char **argv)
 	string Argv1(argv[1]);
 	StocksNews sn(Argv1);
 	string Argv2(argv[2]);
-	int ArgValue;
-	if (Argv2 == "--update") {
-		ArgValue = update;
-	}
-	if (Argv2 == "--maxrate") {
-		ArgValue = maxrate;
-	}
-if (Argv2 == "--maxnumbers") {
-		ArgValue = maxnumbers;
-	}
-	switch(ArgValue){
+	ArgValue aArgValue(novalue);
+	
+	if (Argv2 == "--update") {aArgValue = update;}
+	if (Argv2 == "--maxrate") {aArgValue = maxrate;}
+	if (Argv2 == "--maxnumbers") {aArgValue = maxnumbers;}
+	
+	switch(aArgValue){
 		case update : {
 			sn.UpdateNews();
 			break;
 		}
 		case maxrate : {
 			string Argv3(argv[3]);
-			cout <<  sn.Results(stoi(Argv3)) ;
+			cout <<  sn.Results(stoi(Argv3), MaxRate) ;
 			break;
 		}
 		case maxnumbers : {
 			string Argv3(argv[3]);
-			cout <<  sn.Results(stoi(Argv3)) ;
+			cout <<  sn.Results(stoi(Argv3), MaxNumbers) ;
 			break;
 		}
 		default : help();
