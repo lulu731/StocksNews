@@ -6,6 +6,7 @@
 #include <map>
 #include <sstream>
 #include <string>
+#include <utility>
 
 SortedStocks::SortedStocks(const std::string& data_base_name, const int stocks_nb, const ResultType rt)
 {
@@ -59,43 +60,55 @@ void SortedStocks::SortByMaxRate(const std::string& data_base_name, const int st
 void SortedStocks::SortByMaxNumbers(const std::string& data_base_name, const int stocks_nb)
 {
 	std::map<int, std::multimap<float, std::string, std::greater<float>>*, std::greater<int>> AMap;
+	int NbItems(0);
 	std::string line;
 	std::fstream istream(data_base_name, std::ios_base::in);
  	std::getline(istream, line, '\n');
-
-	int items(0);
-	float MaxR(0.00);
-	int MinSorted(0);
-	while(!(istream.eof()))
-	{
-		std::istringstream line_stream(line);
+	while(!(istream.eof())) 
+	{	std::istringstream line_stream(line);
 		std::string str;
 		std::getline(line_stream, str, ',');
 		std::getline(line_stream, str, ',');
 		std::getline(line_stream, str, ',');
 
 		const int NewsNbre(std::stoi(str.c_str()));
+		std::getline(line_stream, str, ','); // gets increasing rate
+		std::getline(line_stream, str);
+		const float Afloat(strtof(str.c_str(), nullptr));
 
-		if (items < stocks_nb || !(NewsNbre < MinSorted)){
-			if (AMap.find(NewsNbre) == AMap.end()) {
-				AMap.insert(std::pair<int, std::multimap<float, std::string, std::greater<float>>*>
-					(NewsNbre, new std::multimap<float, std::string, std::greater<float>>));
-			}
-
-			std::getline(line_stream, str, ','); // gets increasing rate
-			std::getline(line_stream, str);
-			const float Afloat(strtof(str.c_str(), nullptr));
-			if (!(Afloat < MaxR) && !(str == "inf")){
+		if (NbItems < stocks_nb){
+			if (!(str == "inf") && (Afloat > 0)){	
+				if (AMap.find(NewsNbre) == AMap.end()) {
+					AMap.insert(std::pair<int, std::multimap<float, std::string, std::greater<float>>*>
+						(NewsNbre, new std::multimap<float, std::string, std::greater<float>>));
+				}
 				AMap[NewsNbre]->insert(std::make_pair(Afloat, line));
-				if (items < stocks_nb) {++items;};
-				if (MaxR < Afloat) {MaxR = Afloat;};
+				++NbItems;
+			}
+		} else {
+			if (!(str == "inf") && (Afloat > 0)){	
+				auto it = AMap.end(); //(*it) is a pointer to a map
+				
+				if (NewsNbre >= (*(--it)).first) {
+					if (AMap.find(NewsNbre) == AMap.end()) {
+						AMap.insert(std::pair<int, std::multimap<float, std::string, std::greater<float>>*>
+							(NewsNbre, new std::multimap<float, std::string, std::greater<float>>));
+					}
+					auto it2 = (*((*it).second)).end();
+					
+					if (Afloat > (*(--it2)).first) {
+						AMap[NewsNbre]->erase(it2);
+						AMap[NewsNbre]->insert(std::make_pair(Afloat, line));
+					}
+				}
 			}
 		}
-	std::getline(istream, line, '\n');
-	}
+	}	
 
 	for (std::map<int, std::multimap<float, std::string, std::greater<float>>*>::iterator it = AMap.begin(); it!=AMap.end(); ++it) {
-		m_mmapSortedStocks.insert((*(it->second)).begin(), (*(it->second)).end());
+		if (int(m_mmapSortedStocks.size()) < stocks_nb)
+			{m_mmapSortedStocks.insert((*(it->second)).begin(), (*(it->second)).end());}
+		delete (it->second);
 	}
 
 	while (int(m_mmapSortedStocks.size()) > stocks_nb){
