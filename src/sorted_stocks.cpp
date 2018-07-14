@@ -65,7 +65,9 @@ void SortedStocks::SortByMaxNumbers(const std::string& data_base_name, const int
 	std::fstream istream(data_base_name, std::ios_base::in);
  	std::getline(istream, line, '\n');
 	while(!(istream.eof())) 
-	{	std::istringstream line_stream(line);
+	{	
+		//std::cout << "in while loop \n";
+		std::istringstream line_stream(line);
 		std::string str;
 		std::getline(line_stream, str, ',');
 		std::getline(line_stream, str, ',');
@@ -103,6 +105,7 @@ void SortedStocks::SortByMaxNumbers(const std::string& data_base_name, const int
 				}
 			}
 		}
+		std::getline(istream, line, '\n');
 	}	
 
 	for (std::map<int, std::multimap<float, std::string, std::greater<float>>*>::iterator it = AMap.begin(); it!=AMap.end(); ++it) {

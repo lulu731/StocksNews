@@ -25,11 +25,11 @@ int main(int argc, char **argv)
 	StocksNews sn(Argv1);
 	string Argv2(argv[2]);
 	ArgValue aArgValue(novalue);
-	
+
 	if (Argv2 == "--update") {aArgValue = update;}
 	if (Argv2 == "--maxrate") {aArgValue = maxrate;}
 	if (Argv2 == "--maxnumbers") {aArgValue = maxnumbers;}
-	
+
 	switch(aArgValue){
 		case update : {
 			sn.UpdateNews();

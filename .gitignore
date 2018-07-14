@@ -1,0 +1,10 @@
+doc/html
+doc/latex
+
+tests/Tests.project
+
+.codelite/
+StocksNews.*
+build*
+
+

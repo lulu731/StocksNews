@@ -2,6 +2,7 @@
 #include "stocks_news_tests.hpp"
 #include <boost/filesystem.hpp>
 #include <boost/test/unit_test.hpp>
+#include <iostream>
 
 struct fixture_copy_expected_database {
     fixture_copy_expected_database()
@@ -28,8 +29,8 @@ BOOST_AUTO_TEST_CASE(sort_stocks_by_maxrate)
 BOOST_AUTO_TEST_CASE(sort_stocks_by_maxnumber)
 {
     SortedStocks actual(k_expectedDatabase, 4, MaxNumbers);
-    const std::string expected_sorted_stocks[4] = { "KN.PA,Natixis,49,55,0.12", "TEO.PA,Theolia SA,50,53,0.06", "ACA.PA,Credit Agricole,50,52,0.04", 
-	"FTE.PA,France Telecom,50,51,0.02"};
+    const std::string expected_sorted_stocks[4] = { "KN.PA,Natixis,49,55,0.12", "TEO.PA,Theolia SA,50,53,0.06", 
+		"ACA.PA,Credit Agricole,50,52,0.04", "FTE.PA,France Telecom,50,51,0.02"};
     for(auto& str : expected_sorted_stocks) {
 	BOOST_CHECK_EQUAL(str, actual.NextStock());
     }
