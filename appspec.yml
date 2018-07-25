@@ -14,11 +14,11 @@ os: linux
 #   "files" section altogether. A blank or incomplete "files" section
 #   may cause associated deployments to fail.
 #files:
-#  - source: 
-#    destination:
+  - source: ./stocksnews
+    destination: ~/stocks_news
 #  - source:
 #    destination:
-hooks:
+#hooks:
 # For each deployment lifecycle event, specify multiple "location" entries 
 #   if you want to run multiple scripts during that event.
 # You can specify "timeout" as the number of seconds to wait until failing the deployment 
@@ -41,7 +41,7 @@ hooks:
 #   incomplete event declarations may cause associated deployments to fail.
 # During the BeforeInstall deployment lifecycle event, run the commands 
 #   in the script specified in "location".
-  BeforeInstall:
-    - location: scripts/deploy-aws.sh
-      timeout: 300
-      runas: admin
+#  BeforeInstall:
+#    - location: scripts/deploy-aws.sh
+#      timeout: 300
+#      runas: ubuntu

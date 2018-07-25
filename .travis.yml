@@ -1,23 +1,41 @@
 language: cpp
-
 before_install:
-  - chmod +x scripts/install-dependencies.sh
-  - ./scripts/install-dependencies.sh
-
+- chmod +x scripts/install-dependencies.sh
+- "./scripts/install-dependencies.sh"
 script:
-  - chmod +x scripts/build-stocksnews.sh
-  - ./scripts/build-stocksnews.sh
-  - chmod +x scripts/test-units.sh
-  - ./scripts/test-units.sh
-  - chmod +x scripts/test-stocksnews.sh
-  - ./scripts/test-stocksnews.sh
+- chmod +x scripts/build-stocksnews.sh
+- "./scripts/build-stocksnews.sh"
+- chmod +x scripts/test-units.sh
+- "./scripts/test-units.sh"
+- chmod +x scripts/test-stocksnews.sh
+- "./scripts/test-stocksnews.sh"
 
-#deploy:
-#  - provider: codedeploy
-#    access_key_id: ""
-#    secret_access_key: ""
-#    bucket: "S3 Bucket"
-#    key: latest/MyApp.zip
-#    application: StocksNews
-#    deployment_group: StocksNews
-#    region: eu-west-3c
+before_deploy:
+- mkdir -p dpl_cd_upload
+- mv build/stocksnews dpl_cd_upload/stocksnews
+- mv appspec.yml dpl_cd_upload/appspec.yml
+
+deploy:
+- provider: s3
+  access_key_id: AKIAIMLQAATTKWAZ676A
+  secret_access_key: &1
+    secure: RHAg6DSg2Zt0J8po2ER917wv5sTSofpOnFRm0Ffzzt1EnA63UyG7Yd8OWitkzqNKvQacJcbS9TfExZInw1gIN6JgaMr8oRR5AFRS8ubgiznXTvl7Qr165zEAGZYxb+CDnbrniQsDCReZZ9sAQoVwrhK8ybY4/g3YaWDfzcWhKcvkcJdscWIDr1A6yPYq5JGxr3wz65lnm5nshnTcmhst7oAeZD9Vg0Xm3yrjuzli28FUuXxY0fVhj8RJU+Jso/h3ckbmJLwm3zRuMwD8Vva7Be5GL2Kfyi/JThS7OhZLQnbfAg+0zJ8VIzZM/WQM1WhwpXL0nhIBT4KS6w6WWzkyHPeGiEv0BKSVrUC0pTYXjSRloixG9JIYKAOF9QK1WARbFU9Ckyglqfar9T4WM/6u7JZZ8AcKwK7ESyjpAeDu+E6TmtBj/MGUdeKN/ZQITfLUqwkATBlgzVz6sR78ovrP5H3e3sdTxSoC0NIHXXu9UJ1NrgCVxXLO2kuHFrnmnw/jtxqOTz6fBPxibiDgioVOLZrSxWMM51RuBHwnLE+/25ByXJpQxtdqJE9SdHfmA65FhrrpGha4vTLy+HJ9lnXGhXxrOzmIOe3NbBylAjheWfghC/+MU5VsXux2BCB8jGovruORM/Cj4BTNJ4H7tma7PU/MYXbVcSn/0dooeQkebV4=
+  local_dir: dpl_cd_upload
+  skip_cleanup: true
+  region: eu-west-3
+  on: &2
+    branch: master
+#    repo: lulu731/StocksNews
+  bucket: stocksnewsbucket
+
+
+- provider: codedeploy
+  access_key_id: AKIAIMLQAATTKWAZ676A
+  secret_access_key: *1
+  bucket: stocksnewsbucket
+#  key: AKIAIMLQAATTKWAZ676A
+#  bundle_type: zip
+  application: StocksNews
+  deployment_group: StocksNews_group
+  on: *2
+
